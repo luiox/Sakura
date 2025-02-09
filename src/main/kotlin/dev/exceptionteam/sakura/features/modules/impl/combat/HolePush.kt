@@ -35,7 +35,6 @@ object HolePush: Module(
     name = "hole-push",
     category = Category.COMBAT
 ) {
-    private val BPT by setting("multi-place", 2, 1..4)
     private val targetRange by setting("target-range", 3.0f, 2.5f..6.0f)
     private val onlyPlayers by setting("only-players", true)
     private val rotation by setting("rotation", true)
@@ -56,11 +55,12 @@ object HolePush: Module(
             multiCount = 0
             stage = 0
             timer.reset()
+            pistonInfo = null
         }
 
         nonNullListener<Render3DEvent> {
             pistonInfo?.let {
-                renderer.add(it.pos, pistonColor)
+                renderer.add(it.pistonPos, pistonColor)
                 renderer.render(true)
             }
         }
@@ -68,10 +68,8 @@ object HolePush: Module(
         nonNullListener<TickEvents.Update> {
             if (movePause && isMoving()) return@nonNullListener
             if (onlyPlayers) getTargetPlayer(targetRange)?.let {
-                if (multiCount > BPT) return@nonNullListener
                 push(it)
             } else getTarget(targetRange)?.let {
-                if (multiCount > BPT) return@nonNullListener
                 push(it)
             }
         }
@@ -80,33 +78,32 @@ object HolePush: Module(
 
     private fun NonNullContext.push(target: Entity) {
         pistonInfo = getPiston(target.blockPosition()) ?: return
-        val pistonPos: BlockPos = pistonInfo!!.pos
-        val pistonFacing: Direction = pistonInfo!!.direction
-        val redstonePos: BlockPos = getRedStone(pistonPos, pistonFacing, target.blockPosition().above()) ?: return
+
+        val pistonPos: BlockPos = pistonInfo?.pistonPos ?: return
+        val pistonFacing: Direction = pistonInfo?.direction ?: return
+        val redstonePos: BlockPos = pistonInfo?.redstonePos ?: return
 
         when (stage) {
             0 -> {
-                //rotate
-                val angle = when (pistonFacing.opposite) {
-                    Direction.EAST -> -90f
-                    Direction.NORTH -> 180f
-                    Direction.SOUTH -> 0f
-                    Direction.WEST -> 90f
-                    else -> 0f
-                }
+                // Piston's direction
+                val angle = Direction.getYRot(pistonFacing.opposite)
                 addRotation(angle, 0.0f, 0)
                 nextStage()
             }
             1 -> {
-                //Place Piston
+                // Place piston
                 place(pistonPos, Blocks.PISTON, switchMode, swing, rotation, 0)
+
                 nextStage()
             }
             2 -> {
-                //Place RedStone
+                // Place red stone
                 if (!timer.passedAndReset(delay)) return
+
                 place(redstonePos, Blocks.REDSTONE_BLOCK, switchMode, swing, rotation, 0)
-                toggle()
+
+                disable()
+                return
             }
         }
     }
@@ -126,7 +123,8 @@ object HolePush: Module(
                 if (block != Blocks.AIR && block != Blocks.PISTON) return@forEach //not air = 放你妈
                 if (getNeighbourSide(pos) == null) return@forEach
                 if (block == Blocks.PISTON && isActivated(blockState)) return@forEach
-                return PistonInfo(pos, direction.opposite) //返回的是活塞要看着的方向
+                val redstone = getRedStone(pos, direction.opposite, playerPos.above()) ?: return@forEach
+                return PistonInfo(pos, direction.opposite, redstone) //返回的是活塞要看着的方向
             }
         return null
     }
@@ -136,7 +134,7 @@ object HolePush: Module(
      }
 
     //TODO:其实我在考虑这个pos变数要不要搞成list 这样能一次把不想红石放的位置黑名单
-    private fun getRedStone(pistonPos: BlockPos, pistonFacing: Direction, blacklist: BlockPos, lever: Boolean = false): BlockPos? {
+    private fun getRedStone(pistonPos: BlockPos, pistonFacing: Direction, blacklist: BlockPos): BlockPos? {
         Direction.entries
             .filter { it != pistonFacing }
             .forEach { direction ->
@@ -150,5 +148,9 @@ object HolePush: Module(
         return null
     }
 
-    class PistonInfo(val pos: BlockPos, val direction: Direction)
+    data class PistonInfo(
+        val pistonPos: BlockPos,
+        val direction: Direction,
+        val redstonePos: BlockPos,
+    )
 }

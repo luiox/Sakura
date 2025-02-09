@@ -14,6 +14,7 @@ category.client=客户端
 category.hud=界面
 
 settings.toggle=开关
+settings.drawn=在功能列表显示
 settings.key-bind=按键绑定
 
 hotbar.switch-mode.off=关闭
@@ -30,6 +31,7 @@ modules.ui-setting.page=页面
 modules.ui-setting.page.general=常规
 modules.ui-setting.background=背景
 modules.ui-setting.rounded=圆角
+modules.ui-setting.notification-icon=通知图标
 modules.ui-setting.shadow=阴影
 modules.ui-setting.page.color=颜色
 modules.ui-setting.primary-color=主颜色
@@ -39,8 +41,7 @@ modules.ui-setting.outline-color=轮廓颜色
 modules.ui-setting.slider-color=滑块颜色
 modules.ui-setting.background-color=背景颜色
 
-modules.chat-info=聊天栏信息
-modules.chat-info.description=在功能开关时在聊天栏显示信息
+modules.chat-notification=聊天栏通知
 
 modules.custom-font=自定义字体
 modules.custom-font.font-size=字体大小
@@ -137,8 +138,12 @@ modules.auto-crystal.break-swing=敲击摇手
 modules.auto-crystal.page.render=渲染
 modules.auto-crystal.color=颜色
 modules.auto-crystal.show-dmg=显示伤害
+modules.auto-crystal.box=实心渲染
+modules.auto-crystal.outline=边框渲染
+modules.auto-crystal.line-width=边框厚度
 
 modules.strafe-fix=移动修复
+modules.strafe-fix.direction=修改方向
 
 modules.gui-image=界面图片
 modules.gui-image.image=图片
@@ -154,7 +159,6 @@ modules.feet-trap.switch-mode=切换模式
 modules.feet-trap.swing=摇手
 
 modules.hole-push=活塞推人
-modules.hole-push.multi-place=多次放置
 modules.hole-push.target-range=目标范围
 modules.hole-push.only-players=仅对玩家生效
 modules.hole-push.rotation=转头
@@ -204,3 +208,50 @@ modules.combat-settings.assume-resistance=假设抗性
 modules.combat-settings.back-side-sampling=背面采样
 modules.combat-settings.horizontal-center-sampling=水平中心采样
 modules.combat-settings.vertical-center-sampling=垂直中心采样
+
+modules.rotations=转头
+modules.rotations.packet-rotation=发包转头
+
+modules.fps=帧数
+modules.fps.text-color=文字颜色
+modules.fps.shadow=阴影
+modules.fps.scale=缩放
+
+modules.ping=网络延迟
+modules.ping.text-color=文字颜色
+modules.ping.shadow=阴影
+modules.ping.scale=缩放
+
+modules.notification-hud=通知
+modules.notification-hud.width=宽度
+modules.notification-hud.height=高度
+modules.notification-hud.main-length=主动画长度
+modules.notification-hud.keep-length=保持动画长度
+modules.notification-hud.icon=图标
+modules.notification-hud.icon-scale=图标缩放
+modules.notification-hud.background-color=背景颜色
+modules.notification-hud.line-color=线条颜色
+modules.notification-hud.shadow=阴影
+
+modules.array-list=功能列表
+modules.array-list.text-color=文字颜色
+modules.array-list.shadow=阴影
+modules.array-list.scale=缩放
+
+modules.event-notifier=事件提醒器
+modules.event-notifier.player-join=玩家加入伺服器
+modules.event-notifier.player-leave=玩家离开伺服器
+modules.event-notifier.join-message=玩家 $NAME 加入了伺服器!
+modules.event-notifier.leave-message=玩家 $NAME 离开了伺服器!
+
+modules.hole-esp=坑显示
+modules.hole-esp.range=渲染距离
+modules.hole-esp.y-range=渲染高度
+modules.hole-esp.box=实心渲染
+modules.hole-esp.outline=边框渲染
+modules.hole-esp.height=渲染高度
+modules.hole-esp.line-width=边框厚度
+modules.hole-esp.color=颜色
+
+modules.step=小蜜蜂飞二楼
+modules.step.height=高度

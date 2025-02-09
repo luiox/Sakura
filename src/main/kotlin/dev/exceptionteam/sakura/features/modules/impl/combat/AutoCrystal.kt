@@ -7,10 +7,10 @@ import dev.exceptionteam.sakura.events.impl.TickEvents
 import dev.exceptionteam.sakura.events.nonNullListener
 import dev.exceptionteam.sakura.features.modules.Category
 import dev.exceptionteam.sakura.features.modules.Module
-import dev.exceptionteam.sakura.graphics.utils.RenderUtils3D.worldSpaceToScreenSpace
 import dev.exceptionteam.sakura.graphics.color.ColorRGB
 import dev.exceptionteam.sakura.graphics.font.FontRenderers
 import dev.exceptionteam.sakura.graphics.general.ESPRenderer
+import dev.exceptionteam.sakura.graphics.utils.RenderUtils3D.worldSpaceToScreenSpace
 import dev.exceptionteam.sakura.managers.impl.HotbarManager.SwitchMode
 import dev.exceptionteam.sakura.managers.impl.TargetManager.getTargetPlayer
 import dev.exceptionteam.sakura.utils.combat.DamageCalculation
@@ -64,6 +64,9 @@ object AutoCrystal: Module(
     private val breakSwing by setting("break-swing", true) { page == Page.BREAK }
 
     // Render
+    private val box by setting("box", true) { page == Page.RENDER }
+    private val outline by setting("outline", true) { page == Page.RENDER }
+    private val lineWidth by setting("line-width", 1.0f, 0.1f..5.0f){ page == Page.RENDER && outline }
     private val color by setting("color", ColorRGB(255, 50, 50)) { page == Page.RENDER }
     private val showDmg by setting("show-dmg", true) { page == Page.RENDER }
 
@@ -72,6 +75,13 @@ object AutoCrystal: Module(
     private val breakTimer = TimerUtils()
 
     private var crystalInfo: CrystalInfo? = null
+
+    override fun hudInfo(): String? {
+        crystalInfo?.let {
+            return String.format("%.1f/%.1f", it.selfDmg, it.targetDmg)
+        }
+        return null
+    }
 
     init {
         onEnable {
@@ -85,7 +95,7 @@ object AutoCrystal: Module(
         nonNullListener<Render3DEvent> {
             crystalInfo?.let { inf ->
                 renderer.add(inf.pos.below(), color)
-                renderer.render(true)
+                renderer.render(true, box, 1.0, outline, lineWidth, 1.0)
             }
         }
 
@@ -177,7 +187,7 @@ object AutoCrystal: Module(
         val targetCalc = DamageCalculation(this, target, predictPos)
 
         target.blockPosition()
-            .aroundBlock(6)
+            .aroundBlock(6, 6)
             .filter { it.center.distanceSqTo(player) <= placeRange.sq }
             .filter { canPlaceCrystal(it) }
             .forEach {

@@ -1,11 +1,11 @@
 package dev.exceptionteam.sakura.features.modules
 
 import dev.exceptionteam.sakura.events.EventBus
-import dev.exceptionteam.sakura.features.modules.impl.client.ChatInfo
 import dev.exceptionteam.sakura.features.settings.*
+import dev.exceptionteam.sakura.graphics.texture.CategoryIcons
+import dev.exceptionteam.sakura.managers.impl.NotificationManager
 import dev.exceptionteam.sakura.translation.TranslationString
 import dev.exceptionteam.sakura.utils.control.KeyBind
-import dev.exceptionteam.sakura.utils.ingame.ChatUtils
 import dev.exceptionteam.sakura.utils.threads.runSafe
 import net.minecraft.ChatFormatting
 import java.util.concurrent.CopyOnWriteArrayList
@@ -16,7 +16,7 @@ abstract class AbstractModule(
     val description: TranslationString,
     defaultEnable: Boolean,
     val alwaysEnable: Boolean,
-    defaultBind: Int
+    defaultBind: Int,
 ): SettingsDesigner<AbstractModule> {
 
     private val enableCustomers = CopyOnWriteArrayList<() -> Unit>()
@@ -29,6 +29,9 @@ abstract class AbstractModule(
     var isEnabled by toggleSetting0
     val isDisabled get() = !isEnabled
 
+    private val drawnSetting0 = BooleanSetting(TranslationString("settings", "drawn"), false) { true }
+    var isDrawn by drawnSetting0
+
     private val keyBind0 = KeyBindSetting(
         TranslationString("settings", "key-bind"), KeyBind(KeyBind.Type.KEYBOARD, defaultBind, 1))
     val keyBind by keyBind0
@@ -36,6 +39,7 @@ abstract class AbstractModule(
     init {
 
         settings.add(toggleSetting0)
+        settings.add(drawnSetting0)
         settings.add(keyBind0)
 
         toggleSetting0.onChangeValue {
@@ -49,16 +53,20 @@ abstract class AbstractModule(
         enableCustomers.add {
             EventBus.subscribe(this)
             runSafe {
-                if (ChatInfo.isEnabled)
-                    ChatUtils.sendMessageWithID("${name.translation} is ${ChatFormatting.GREEN}Enabled", name.hashCode())
+                NotificationManager.addNotification(
+                    category.translation, "${name.translation} is ${ChatFormatting.GREEN}Enabled",
+                    CategoryIcons.getIcon(category), name.hashCode()
+                )
             }
         }
 
         disableCustomers.add {
             EventBus.unsubscribe(this)
             runSafe {
-                if (ChatInfo.isEnabled)
-                    ChatUtils.sendMessageWithID("${name.translation} is ${ChatFormatting.RED}Disabled", name.hashCode())
+                NotificationManager.addNotification(
+                    category.translation, "${name.translation} is ${ChatFormatting.RED}Disabled",
+                    CategoryIcons.getIcon(category), name.hashCode()
+                )
             }
         }
 
@@ -79,9 +87,7 @@ abstract class AbstractModule(
         isEnabled = false
     }
 
-    open fun hudInfo(): String {
-        return ""
-    }
+    open fun hudInfo(): String? = null
 
     override fun <S : AbstractSetting<*>> AbstractModule.setting(setting: S): S {
         return setting.apply {

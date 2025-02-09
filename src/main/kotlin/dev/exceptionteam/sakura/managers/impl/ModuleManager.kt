@@ -46,17 +46,20 @@ object ModuleManager {
             PacketEat,
             Disabler,
             FakePlayer,
+            EventNotifier,
 
             // Render
             NameTags,
             FullBright,
             GameAnimation,
             NoRender,
+            HoleESP,
 
             // Movement
             Sprint,
             Velocity,
             StrafeFix,
+            Step,
 
             // Player
             NoFall,
@@ -67,16 +70,21 @@ object ModuleManager {
             UiSetting,
             ClickGUI,
             HUDEditor,
-            ChatInfo,
+            ChatNotification,
             CombatSettings,
             CustomFont,
             RenderSystemMod,
             Language,
+            Rotations,
 
             // HUD
             WaterMark,
             GuiImage,
             Welcomer,
+            FPS,
+            Ping,
+            NotificationHUD,
+            ArrayList,
         )
 
         val event = RegisterModuleEvent(modules.toMutableList())

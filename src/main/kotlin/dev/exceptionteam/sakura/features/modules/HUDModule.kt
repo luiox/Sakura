@@ -17,7 +17,7 @@ abstract class HUDModule(
     TranslationString("modules", "description"),
     defaultEnable,
     alwaysEnable,
-    defaultBind
+    defaultBind,
 ) {
 
     init {

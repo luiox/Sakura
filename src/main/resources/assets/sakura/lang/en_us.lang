@@ -7,6 +7,7 @@ category.client=Client
 category.hud=HUD
 
 settings.toggle=Toggle
+settings.drawn=Drawn
 settings.key-bind=Key Bind
 
 hotbar.switch-mode.off=Off
@@ -23,6 +24,7 @@ modules.ui-setting.page=Page
 modules.ui-setting.page.general=General
 modules.ui-setting.background=Background
 modules.ui-setting.rounded=Rounded
+modules.ui-setting.notification-icon=Notification Icon
 modules.ui-setting.shadow=Shadow
 modules.ui-setting.page.color=Color
 modules.ui-setting.primary-color=Primary Color
@@ -32,8 +34,7 @@ modules.ui-setting.outline-color=Outline Color
 modules.ui-setting.slider-color=Slider Color
 modules.ui-setting.background-color=Background Color
 
-modules.chat-info=Chat Info
-modules.chat-info.description=Send information when modules toggling
+modules.chat-notification=Chat Notification
 
 modules.custom-font=Custom Font
 modules.custom-font.font-size=Font Size
@@ -130,8 +131,12 @@ modules.auto-crystal.break-swing=Break Swing
 modules.auto-crystal.page.render=Render
 modules.auto-crystal.color=Color
 modules.auto-crystal.show-dmg=Show Dmg
+modules.auto-crystal.box=Box
+modules.auto-crystal.outline=Outline
+modules.auto-crystal.line-width=Line Width
 
 modules.strafe-fix=Strafe Fix
+modules.strafe-fix.direction=Direction
 
 modules.gui-image=GUI Image
 modules.gui-image.image=Image
@@ -146,8 +151,7 @@ modules.feet-trap.delay=Delay
 modules.feet-trap.switch-mode=Switch Mode
 modules.feet-trap.swing=Swing
 
-modules.hole-push=HolePush
-modules.hole-push.multi-place=Multi Place
+modules.hole-push=Hole Push
 modules.hole-push.target-range=Target Range
 modules.hole-push.only-players=Only Players
 modules.hole-push.rotation=Rotation
@@ -196,3 +200,50 @@ modules.combat-settings.assume-resistance=Assume Resistance
 modules.combat-settings.back-side-sampling=Back Side Sampling
 modules.combat-settings.horizontal-center-sampling=Horizontal Center Sampling
 modules.combat-settings.vertical-center-sampling=Vertical Center Sampling
+
+modules.rotations=Rotations
+modules.rotations.packet-rotation=Packet Rotation
+
+modules.fps=FPS
+modules.fps.text-color=Text Color
+modules.fps.shadow=Shadow
+modules.fps.scale=Scale
+
+modules.ping=Ping
+modules.ping.text-color=Text Color
+modules.ping.shadow=Shadow
+modules.ping.scale=Scale
+
+modules.notification-hud=Notification
+modules.notification-hud.width=Width
+modules.notification-hud.height=Height
+modules.notification-hud.main-length=Main Length
+modules.notification-hud.keep-length=Keep Length
+modules.notification-hud.icon=Icon
+modules.notification-hud.icon-scale=Icon Scale
+modules.notification-hud.background-color=Background Color
+modules.notification-hud.line-color=Line Color
+modules.notification-hud.shadow=Shadow
+
+modules.array-list=Array List
+modules.array-list.text-color=Text Color
+modules.array-list.shadow=Shadow
+modules.array-list.scale=Scale
+
+modules.event-notifier=Event Notifier
+modules.event-notifier.player-join=Player Join
+modules.event-notifier.player-leave=Player Leave
+modules.event-notifier.join-message=Player $NAME joined!
+modules.event-notifier.leave-message=Player $NAME left!
+
+modules.hole-esp=Hole ESP
+modules.hole-esp.range=Range
+modules.hole-esp.y-range=Y Range
+modules.hole-esp.box=Box
+modules.hole-esp.outline=Outline
+modules.hole-esp.height=Render Height
+modules.hole-esp.line-width=Line Width
+modules.hole-esp.color=Color
+
+modules.step=Step
+modules.step.height=Height
