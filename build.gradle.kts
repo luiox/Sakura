@@ -1,81 +1,53 @@
 plugins {
     java
-    kotlin("jvm") version "2.0.21"
-    id("fabric-loom") version "1.8-SNAPSHOT"
+    kotlin("jvm") version "2.1.0"
+    id("fabric-loom") version "1.9-SNAPSHOT" apply false
+    id("com.gradleup.shadow") version "8.3.6" apply false
+    id("net.neoforged.moddev") version "2.0.78" apply false
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
+group = "dev.exceptionteam"
+version = "${project.property("mod_version")}"
 
-    maven("https://maven.luna5ama.dev/")
-    maven("https://maven.parchmentmc.org")
-}
+val archives_base_name: String by rootProject
+val mod_version: String by rootProject
+val maven_group: String by rootProject
 
-private val library by configurations.creating {
-    configurations.implementation.get().extendsFrom(this)
-}
 
-dependencies {
-    minecraft("com.mojang:minecraft:${property("minecraft_version")}")
-    mappings(loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${property("parchment_version")}@zip")
-    })
+allprojects {
+    apply {
+        plugin("java")
+    }
 
-    modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-renderer-indigo:${property("fabric_version")}")
+    base {
+        archivesName = archives_base_name
+    }
 
-    library(kotlin("stdlib"))
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
-    library("dev.luna5ama:kmogus-core:${property("kmogus_version")}")
-    library("dev.luna5ama:kmogus-struct-api:${property("kmogus_version")}")
-}
+    version = mod_version
+    group = maven_group
 
-loom {
-    accessWidenerPath.assign(file("src/main/resources/sakura.accesswidener"))
-}
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven("https://maven.fabricmc.net/")
+        maven("https://jitpack.io")
+        maven("https://maven.luna5ama.dev/")
+    }
 
-kotlin {
-    jvmToolchain(21)
-}
+    tasks.javadoc {
+        enabled = false
+    }
 
-java {
-    withSourcesJar()
-}
-
-tasks {
-    compileJava {
+    tasks.compileJava {
         options.encoding = "UTF-8"
-        options.release.set(21)
+        options.release = 21
     }
 
-    compileKotlin {
-    }
-
-    processResources {
-        inputs.property("version", project.version)
-        filesMatching("fabric.mod.json") {
-            expand(getProperties())
-            expand(mutableMapOf("version" to project.version))
-        }
-    }
-
-
-    jar {
+    tasks.jar {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 
-        from(
-            library.map {
-                if (it.isDirectory) {
-                    it
-                } else {
-                    zipTree(it)
-                }
-            }
-        )
-
-        exclude("META-INF/*.RSA", "META-INF/*.DSA", "META-INF/*.SF")
+    java {
+        withSourcesJar()
     }
 }

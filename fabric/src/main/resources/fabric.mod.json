@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "sakura",
+	"version": "${version}",
+	"name": "Sakura",
+	"description": "Minecraft hack client",
+	"contact": {
+		"sources": "https://github.com/ExceptionTeam6969/Sakura"
+	},
+	"entrypoints": {
+		"client": [
+			"dev.exceptionteam.sakura.fabric.SakuraMod"
+		]
+	},
+	"authors": [
+		"slmpc",
+		"zenhao",
+		"DeSu0556",
+		"dragon-jpg",
+		"pywong921x"
+	],
+	"license": "GPL-3.0",
+	"environment": "client",
+	"mixins": [
+      	"sakura.core.mixins.json",
+		"sakura.font.mixins.json"
+	],
+	"accessWidener": "sakura.accesswidener",
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21.4",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
