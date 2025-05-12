@@ -147,16 +147,26 @@ object Velocity: Module(
                     }
                     player.deltaMovement = newVelocity
                 }
+                Mode.HYPIXEL -> {
+                    when (val packet = e.packet) {
+                        is ClientboundSetEntityMotionPacket -> {
+                            if (packet.id == player.id) { // 确保这个速度包是针对玩家自己的
+                                e.cancel()
+                                val newVelocity = Vec3(0.0, packet.ya, 0.0)
+                                player.deltaMovement = newVelocity
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-
-
 
     private enum class Mode(override val key: CharSequence): TranslationEnum {
         NORMAL("normal"),
         WALL("wall"),
         OLD_GRIM("old-grim"),
-        GRIM("grim")
+        GRIM("grim"),
+        HYPIXEL("hypixel")
     }
 }

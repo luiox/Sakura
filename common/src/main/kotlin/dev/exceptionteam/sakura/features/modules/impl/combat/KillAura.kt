@@ -6,6 +6,7 @@ import dev.exceptionteam.sakura.features.modules.Category
 import dev.exceptionteam.sakura.features.modules.Module
 import dev.exceptionteam.sakura.managers.impl.TargetManager.getTarget
 import dev.exceptionteam.sakura.managers.impl.TargetManager.getTargetPlayer
+import dev.exceptionteam.sakura.utils.math.distanceSqTo
 import dev.exceptionteam.sakura.utils.player.InteractionUtils.attack
 import dev.exceptionteam.sakura.utils.timing.TimerUtils
 import net.minecraft.world.item.Item
@@ -15,7 +16,8 @@ object KillAura: Module(
     name = "kill-aura",
     category = Category.COMBAT
 ) {
-    private val range by setting("range", 3.0f, 2.5f..6.0f)
+    private val attackRange by setting("attack-range", 3.0f, 2.5f..6.0f)
+    private val targetRange by setting("target-range", 3.0f, 2.5f..6.0f)
     private val delay by setting("delay", 500, 0..3000)
     private val onlyPlayers by setting("only-players", true)
     private val onlySword by setting("only-sword", true)
@@ -30,10 +32,10 @@ object KillAura: Module(
 
             if (onlySword && !isSword(player.mainHandItem.item)) return@nonNullListener
 
-            if (onlyPlayers) getTargetPlayer(range)?.let {
-                attack(it, rotation, swing)
-            } else getTarget(range)?.let {
-                attack(it, rotation, swing)
+            if (onlyPlayers) getTargetPlayer(targetRange)?.let {
+                if (it.distanceSqTo(mc.player!!) <= attackRange) attack(it, rotation, swing)
+            } else getTarget(targetRange)?.let {
+                if (it.distanceSqTo(mc.player!!) <= attackRange) attack(it, rotation, swing)
             }
         }
     }

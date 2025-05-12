@@ -93,6 +93,7 @@ modules.velocity.mode.normal=正常
 modules.velocity.mode.wall=墙内
 modules.velocity.mode.old-grim=旧Grim
 modules.velocity.mode.grim=Grim
+modules.velocity.mode.hypixel=嗨皮咳嗽
 modules.velocity.anti-fire=火焰
 
 modules.game-animation=游戏内动画
@@ -173,7 +174,8 @@ modules.cancel-using=取消使用
 modules.cancel-using.shield=盾牌
 
 modules.kill-aura=杀戮光环
-modules.kill-aura.range=范围
+modules.kill-aura.target-range=目标范围
+modules.kill-aura.attack-range=攻击范围
 modules.kill-aura.delay=延迟
 modules.kill-aura.only-sword=仅剑
 modules.kill-aura.only-players=仅对玩家生效
